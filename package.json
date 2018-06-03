@@ -13,15 +13,16 @@
   "scripts": {
     "flow": "flow",
     "test": "find src -name '*.spec.js' | xargs mocha src/test.js",
-    "lint": "eslint src/ ",
+    "lint": "eslint src/",
+    "go": "node index.js",
     "prepare:babel": "babel ./src --out-dir ./lib --source-maps true",
     "prepare:flow": "flow-copy-source src lib",
     "prepublish": "yarn prepare:babel && yarn prepare:flow"
   },
   "dependencies": {
     "@wamongo/interfaces": "^1.0.6",
-    "@wamongo/server": "^1.0.6",
-    "@wamongo/web-client": "^1.0.6",
+    "@wamongo/server": "^1.0.11",
+    "@wamongo/web-client": "^1.0.11",
     "argparse": "^1.0.10",
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.2",

@@ -89,27 +89,40 @@
     eslint-plugin-jsx-a11y "^6.0.2"
     eslint-plugin-react "^7.7.0"
 
-"@wamongo/server@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@wamongo/server/-/server-1.0.6.tgz#d283b31492c301972ba0d8c4658a28f123900464"
+"@wamongo/interfaces@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@wamongo/interfaces/-/interfaces-1.0.9.tgz#df1810a73f96d37cb1bb89869170bd1782c3dafe"
   dependencies:
-    "@wamongo/interfaces" "^1.0.6"
-    bson "^2.0.4"
+    babel-eslint "^8.2.3"
+    eslint "^4.19.1"
+    eslint-config-airbnb "16.1.0"
+    eslint-plugin-import "^2.9.0"
+    eslint-plugin-jsx-a11y "^6.0.2"
+    eslint-plugin-react "^7.7.0"
+
+"@wamongo/server@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@wamongo/server/-/server-1.0.11.tgz#1df53185fd0466d8442ef4f0f9122f15e66eca48"
+  dependencies:
+    "@wamongo/interfaces" "^1.0.9"
+    acorn "^5.6.1"
+    babel-runtime "^6.26.0"
+    bson "^2.0.7"
     cookie "^0.3.1"
     debug "^3.1.0"
     engine.io "^3.2.0"
-    jsonwebtoken "^8.2.0"
+    jsonwebtoken "^8.2.2"
     lodash "^4.17.5"
     micromatch "^3.1.9"
-    mongodb "^3.0.4"
+    mongodb "^3.0.9"
     node-yaml "^3.1.1"
     on-finished "^2.3.0"
     safe-eval "^0.3.0"
     winston "^2.4.1"
 
-"@wamongo/web-client@^1.0.6":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@wamongo/web-client/-/web-client-1.0.7.tgz#5fe08e884996c3499fc502a5b01f6e23718ad049"
+"@wamongo/web-client@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@wamongo/web-client/-/web-client-1.0.11.tgz#6065e192d2135e13909b45b4b1f766b027b1756d"
   dependencies:
     "@wamongo/interfaces" "^1.0.6"
     bson "^2.0.4"
@@ -146,6 +159,10 @@ acorn@^3.0.4:
 acorn@^5.5.0:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.5.3.tgz#f473dd47e0277a08e28e9bec5aeeb04751f0b8c9"
+
+acorn@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.6.1.tgz#c9e50c3e3717cf897f1b071ceadbb543bbc0a8d4"
 
 after@0.8.2:
   version "0.8.2"
@@ -1022,6 +1039,10 @@ bson@^2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/bson/-/bson-2.0.6.tgz#d829f8c26797174ec435219901cbc05a13def410"
 
+bson@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-2.0.7.tgz#4eff5829837ab79940f203a25cd94c3036a42c8f"
+
 bson@~1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/bson/-/bson-1.0.6.tgz#444db59ddd4c24f0cb063aabdc5c8c7b0ceca912"
@@ -1448,6 +1469,12 @@ doctrine@^2.0.2, doctrine@^2.1.0:
 dom-helpers@^3.2.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.3.1.tgz#fc1a4e15ffdf60ddde03a480a9c0fece821dd4a6"
+
+ecdsa-sig-formatter@1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.10.tgz#1c595000f04a8897dfb85000892a0f4c33af86c3"
+  dependencies:
+    safe-buffer "^5.0.1"
 
 ecdsa-sig-formatter@1.0.9:
   version "1.0.9"
@@ -2569,11 +2596,26 @@ jsonschema@^1.0.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.2.4.tgz#a46bac5d3506a254465bc548876e267c6d0d6464"
 
-jsonwebtoken@^8.2.0, jsonwebtoken@^8.2.1:
+jsonwebtoken@^8.2.1:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.2.1.tgz#333ee39aa8f238f32fa41693e7a2fb7e42f82b31"
   dependencies:
     jws "^3.1.4"
+    lodash.includes "^4.3.0"
+    lodash.isboolean "^3.0.3"
+    lodash.isinteger "^4.0.4"
+    lodash.isnumber "^3.0.3"
+    lodash.isplainobject "^4.0.6"
+    lodash.isstring "^4.0.1"
+    lodash.once "^4.0.0"
+    ms "^2.1.1"
+    xtend "^4.0.1"
+
+jsonwebtoken@^8.2.2:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.2.2.tgz#76d7993fda79660d71bd0f933109e1f133734b20"
+  dependencies:
+    jws "^3.1.5"
     lodash.includes "^4.3.0"
     lodash.isboolean "^3.0.3"
     lodash.isinteger "^4.0.4"
@@ -2603,12 +2645,27 @@ jwa@^1.1.4:
     ecdsa-sig-formatter "1.0.9"
     safe-buffer "^5.0.1"
 
+jwa@^1.1.5:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.1.6.tgz#87240e76c9808dbde18783cf2264ef4929ee50e6"
+  dependencies:
+    buffer-equal-constant-time "1.0.1"
+    ecdsa-sig-formatter "1.0.10"
+    safe-buffer "^5.0.1"
+
 jws@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/jws/-/jws-3.1.4.tgz#f9e8b9338e8a847277d6444b1464f61880e050a2"
   dependencies:
     base64url "^2.0.0"
     jwa "^1.1.4"
+    safe-buffer "^5.0.1"
+
+jws@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/jws/-/jws-3.1.5.tgz#80d12d05b293d1e841e7cb8b4e69e561adcf834f"
+  dependencies:
+    jwa "^1.1.5"
     safe-buffer "^5.0.1"
 
 kefir@^3.7.3:
@@ -2884,11 +2941,24 @@ mongodb-core@3.0.7:
     bson "~1.0.4"
     require_optional "^1.0.1"
 
-mongodb@^3.0.4, mongodb@^3.0.7:
+mongodb-core@3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.9.tgz#8327410c88811013fb3e4ac7c4c670f324349be1"
+  dependencies:
+    bson "~1.0.4"
+    require_optional "^1.0.1"
+
+mongodb@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.7.tgz#cfcbaee992d78dabca67177f8f9db9cf13ac3a44"
   dependencies:
     mongodb-core "3.0.7"
+
+mongodb@^3.0.9:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.10.tgz#f948cb9595adcbfcad7444f6b24a040b653b23e8"
+  dependencies:
+    mongodb-core "3.0.9"
 
 ms@2.0.0:
   version "2.0.0"
