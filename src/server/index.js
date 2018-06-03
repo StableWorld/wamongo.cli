@@ -3,23 +3,23 @@ import http from 'http';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { createEngine } from '@wamongo/server/lib';
-import { setPerms } from '@wamongo/server/lib/perms/store';
+import { setRules } from '@wamongo/server/lib/rules/store';
 import createApp from './app';
 import log from '../logger';
 
 type ServerArgs = { port: number, path: string, rules: string, dbName: string };
 
-async function loadAndSetPerms(rules: string) {
-  log.info(`Loading Rules from ${rules}`);
-  let perms;
+async function loadAndSetRules(rulesPath: string) {
+  log.info(`Loading Rules from ${rulesPath}`);
+  let rules;
   try {
-    perms = JSON.parse(readFileSync(rules).toString());
+    rules = JSON.parse(readFileSync(rulesPath).toString());
   } catch (err) {
     log.error(err.message);
-    log.error(`Rules File: ${rules}`);
+    log.error(`Rules File: ${rulesPath}`);
     return 1;
   }
-  await setPerms('example', perms);
+  await setRules('example', rules);
   return 0;
 }
 
@@ -28,7 +28,7 @@ const listen = (server, port) => new Promise(next => server.listen(port, next));
 export default async function serverMain({
   port, path, rules, dbName,
 }: ServerArgs): Promise<(0 | 1)> {
-  if (await loadAndSetPerms(rules || resolve(path, 'rules.json'))) {
+  if (await loadAndSetRules(rules || resolve(path, 'rules.json'))) {
     return 1;
   }
 
