@@ -68,7 +68,6 @@ workflows:
           context: org-global
           requires:
             - build-cli
-            - build-server
           filters:
             branches:
               ignore: /.*/
