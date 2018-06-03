@@ -1,1 +1,1 @@
-# wamongo-cli
+# Wamongo Command line client
