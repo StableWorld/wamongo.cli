@@ -4,42 +4,11 @@
 #
 version: 2
 jobs:
-  build-client:
-    docker:
-      - image: library/node:9.11
-    working_directory: ~/repo/client
-
-    steps:
-      - checkout:
-          path: ~/repo
-      - restore_cache:
-          keys:
-          - v1-client-dependencies-{{ checksum "package.json" }}
-          - v1-client-dependencies-
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-client-dependencies-{{ checksum "package.json" }}
-      - run: yarn lint
-      - run: yarn flow
-      - run: yarn test
-      - run: yarn bundle
-      - run: bash ~/repo/.circleci/set-version.sh
-      - run: yarn pack
-      - run: mkdir client-artifacts; mv  *.tgz client-artifacts; mv dist client-artifacts
-      - store_artifacts:
-          path: ~/repo/client/client-artifacts
-      - persist_to_workspace:
-          root: ~/repo/client
-          # Must be relative path from root
-          paths:
-            - client-artifacts
 
   build-cli:
     docker:
       - image: library/node:9.11
-    working_directory: ~/repo/cli
+    working_directory: ~/repo
 
     steps:
       - checkout:
@@ -58,16 +27,16 @@ jobs:
       - run: yarn test
       - run: bash ~/repo/.circleci/set-version.sh
       - run: yarn pack
-      - run: mkdir cli-artifacts; mv  *.tgz cli-artifacts
+      - run: mkdir artifacts; mv  *.tgz artifacts
       - store_artifacts:
-          path: ~/repo/cli/cli-artifacts
+          path: ~/repo/artifacts
       - persist_to_workspace:
-          root: ~/repo/cli
+          root: ~/repo
           # Must be relative path from root
           paths:
-            - cli-artifacts
+            - artifacts
 
-  publish-client-package:
+  publish-cli-package:
     docker:
       - image: library/node:9.11
     working_directory: /tmp/workspace
@@ -76,7 +45,7 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /tmp/workspace
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: npm publish /tmp/workspace/client-artifacts/*.tgz --access public
+      - run: npm publish /tmp/workspace/artifacts/*.tgz --access public
 
   publish-server-package:
     docker:
@@ -89,134 +58,17 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: npm publish /tmp/workspace/server-artifacts/*.tgz --access public
 
-  publish-client-javascript:
-    docker:
-      - image: google/cloud-sdk:198.0.0
-    working_directory: /tmp/workspace
-    steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace
-      - run: |
-          echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
-          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-          gcloud config set project mongo-realtime
-      - run: gsutil cp -a public-read /tmp/workspace/client-artifacts/dist/*.js gs://wamongo/cdn/${CIRCLE_TAG:CIRCLE_BRANCH}/
-
-
-  build-server:
-    docker:
-      - image: library/node:9.11
-      - image: circleci/mongo:3.4.4
-        command: [--replSet, rs0]
-    working_directory: ~/repo/server
-
-    steps:
-      - checkout:
-          path: ~/repo
-      - run: apt-get update
-      - run: apt-get install -y mongodb-clients
-      - run: mongo --eval 'printjson(rs.initiate())'
-
-      - restore_cache:
-          keys:
-          - v1-server-dependencies-{{ checksum "package.json" }}
-          - v1-server-dependencies-
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-server-dependencies-{{ checksum "package.json" }}
-      - run: yarn lint
-      - run: yarn flow
-      - run: yarn test
-      - run: yarn pack
-      - run: mkdir server-artifacts; mv  *.tgz server-artifacts
-      - store_artifacts:
-          path: ~/repo/server/server-artifacts
-      - persist_to_workspace:
-          root: ~/repo/server
-          # Must be relative path from root
-          paths:
-            - server-artifacts
-
-  publish-docker-image:
-    docker:
-      - image: google/cloud-sdk:198.0.0
-    working_directory: ~/repo/server
-
-    steps:
-      - checkout:
-          path: ~/repo
-      - setup_remote_docker
-      - run: sh ../.circleci/docker.sh
-      - run: sh ../.circleci/gcloud.sh
-      - run: docker build -t gcr.io/mongo-realtime/server:${CIRCLE_SHA1} .
-      - run: docker push gcr.io/mongo-realtime/server:${CIRCLE_SHA1}
-
-  tag-docker-latest:
-    docker:
-      - image: google/cloud-sdk:198.0.0
-    working_directory: ~/repo/server
-
-    steps:
-      - checkout:
-          path: ~/repo
-      - setup_remote_docker
-      - run: sh ../.circleci/docker.sh
-      - run: sh ../.circleci/gcloud.sh
-      - run: gcloud container images add-tag gcr.io/mongo-realtime/server:${CIRCLE_SHA1} gcr.io/mongo-realtime/server:latest
 
 workflows:
   version: 2
   build-test-and-deploy:
     jobs:
-      - build-client:
-          filters:
-            branches:
-              only: /.*/
-            tags:
-              only: /.*/
-      - build-server
-      - publish-docker-image:
-          context: org-global
-          requires:
-            - build-server
-          filters:
-            branches:
-              only: master
-      - tag-docker-latest:
-          context: org-global
-          requires:
-            - publish-docker-image
-          filters:
-            branches:
-              only: master
       - build-cli
-      - publish-client-package:
+      - publish-cli-package:
           context: org-global
           requires:
-            - build-client
+            - build-cli
             - build-server
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /.*/
-      - publish-server-package:
-          context: org-global
-          requires:
-            - build-server
-            - build-client
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /.*/
-      - publish-client-javascript:
-          context: org-global
-          requires:
-            - build-client
           filters:
             branches:
               ignore: /.*/
