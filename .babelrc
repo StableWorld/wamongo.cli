@@ -1,0 +1,15 @@
+{
+    "presets":[
+        "env", "react", "flow"
+    ],
+
+    "plugins": [
+      "transform-class-properties",
+      ["transform-runtime", {
+        "polyfill": false,
+        "regenerator": true
+      }]
+    ]
+
+
+}
