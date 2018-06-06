@@ -20,7 +20,7 @@ export default function createApp(path: string, dbName: string) {
       dbID: dbName,
       dbName,
     };
-    res.send(`mongodb.initializeApp(${JSON.stringify(config)});`);
+    res.send(`wamongo.initializeApp(${JSON.stringify(config)});`);
   });
   app.use('/__', express.static(webClientDistPath));
   app.use('/', express.static(resolve(path)));

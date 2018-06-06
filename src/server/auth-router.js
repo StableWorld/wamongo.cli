@@ -63,9 +63,12 @@ router.post(
       throw forbidden('Bad Login', { email: ['User email or password does not exist'] });
     }
     const currentUser = {
-      email, dbName, uid: user._id.toString(), displayName: email,
+      email, uid: user._id.toString(), displayName: email,
     };
-    const accessToken = await signDevOnly(currentUser);
+    const tokenData = {
+      dbName, u: user._id.toString(),
+    };
+    const accessToken = await signDevOnly(tokenData);
 
     res.cookie('access-token', accessToken);
     res.json(({ loginOk: true, dbName, currentUser }: LoginResponse));
@@ -90,8 +93,9 @@ router.post(
     const currentUser = {
       uid: uid.toString(), dbName, email, displayName: email,
     };
+    const tokenData = { dbName, u: uid.toString() };
 
-    const accessToken = await signDevOnly(currentUser);
+    const accessToken = await signDevOnly(tokenData);
 
     res.cookie('access-token', accessToken);
     res.json(({ registerOk: true, dbName, currentUser }: RegisterResponse));
@@ -102,21 +106,32 @@ router.post(
   '/refresh',
   validate({ query: refreshSchema }),
   asm(async (req, res) => {
-    const { dbName } = req.body;
-    const accessToken = req.cookies['access-token'];
-    let currentUser: CurrentUser = {
-      anonymous: true, displayName: 'anonymous', email: '', uid: '',
-    };
+    let { dbName } = req.query;
+    let accessToken = req.cookies['access-token'];
+    let u = '000000000000000000000000';
     if (accessToken) {
-      log.debug('accessToken');
+      log.debug('Found accessToken');
       try {
-        currentUser = await verify(accessToken);
+        const tokenData = await verify(accessToken);
+        u = tokenData.u || u; // eslint-disable-line prefer-destructuring
+        dbName = tokenData.dbName || dbName; // eslint-disable-line prefer-destructuring
       } catch (err) {
         log.error(err);
       }
-    } else {
-      log.debug('no accessToken');
     }
+    const tokenData = { u, dbName };
+    log.debug('Refreshing accessToken', tokenData);
+    accessToken = await signDevOnly(tokenData);
+    res.cookie('access-token', accessToken);
+
+    const currentUser: CurrentUser = {
+      anonymous: true,
+      displayName: 'anonymous',
+      email: 'anonymous@anonymous.com',
+      uid: 'anonymous',
+      dbName,
+    };
+
     res.json(({ refreshOk: true, dbName, currentUser }: RefreshResponse));
   }),
 );

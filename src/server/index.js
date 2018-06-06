@@ -7,7 +7,7 @@ import { setRules } from '@wamongo/server/lib/rules/store';
 import createApp from './app';
 import log from '../logger';
 
-type ServerArgs = { port: number, path: string, rules: string, dbName: string };
+type ServerArgs = { port: string, path: string, rules: string, dbName: string };
 
 async function loadAndSetRules(rulesPath: string) {
   log.info(`Loading Rules from ${rulesPath}`);
