@@ -78,6 +78,17 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@wamongo/interfaces@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@wamongo/interfaces/-/interfaces-1.0.10.tgz#bf03f2fb30c46a70749e67d21eb961d6d69f86bf"
+  dependencies:
+    babel-eslint "^8.2.3"
+    eslint "^4.19.1"
+    eslint-config-airbnb "16.1.0"
+    eslint-plugin-import "^2.9.0"
+    eslint-plugin-jsx-a11y "^6.0.2"
+    eslint-plugin-react "^7.7.0"
+
 "@wamongo/interfaces@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@wamongo/interfaces/-/interfaces-1.0.6.tgz#43680fb8ead766100e8a3dba6e7b2aafd2deb373"
@@ -89,22 +100,11 @@
     eslint-plugin-jsx-a11y "^6.0.2"
     eslint-plugin-react "^7.7.0"
 
-"@wamongo/interfaces@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@wamongo/interfaces/-/interfaces-1.0.9.tgz#df1810a73f96d37cb1bb89869170bd1782c3dafe"
+"@wamongo/server@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@wamongo/server/-/server-1.0.12.tgz#464569bfdee7bbaabca40f757c775778d743c677"
   dependencies:
-    babel-eslint "^8.2.3"
-    eslint "^4.19.1"
-    eslint-config-airbnb "16.1.0"
-    eslint-plugin-import "^2.9.0"
-    eslint-plugin-jsx-a11y "^6.0.2"
-    eslint-plugin-react "^7.7.0"
-
-"@wamongo/server@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@wamongo/server/-/server-1.0.11.tgz#1df53185fd0466d8442ef4f0f9122f15e66eca48"
-  dependencies:
-    "@wamongo/interfaces" "^1.0.9"
+    "@wamongo/interfaces" "^1.0.10"
     acorn "^5.6.1"
     babel-runtime "^6.26.0"
     bson "^2.0.7"
@@ -120,9 +120,9 @@
     safe-eval "^0.3.0"
     winston "^2.4.1"
 
-"@wamongo/web-client@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@wamongo/web-client/-/web-client-1.0.11.tgz#6065e192d2135e13909b45b4b1f766b027b1756d"
+"@wamongo/web-client@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@wamongo/web-client/-/web-client-1.0.12.tgz#c22969f67bd96017ee54b604d076518f523fe639"
   dependencies:
     "@wamongo/interfaces" "^1.0.6"
     bson "^2.0.4"
