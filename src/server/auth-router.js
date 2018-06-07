@@ -1,4 +1,5 @@
 // @flow
+import { ObjectId } from 'bson';
 import { Router } from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -70,6 +71,7 @@ router.post(
     };
     const accessToken = await signDevOnly(tokenData);
 
+    res.cookie('refresh-token', accessToken);
     res.cookie('access-token', accessToken);
     res.json(({ loginOk: true, dbName, currentUser }: LoginResponse));
   }),
@@ -78,6 +80,7 @@ router.post(
 router.post(
   '/logout',
   (req, res) => {
+    res.cookie('refresh-token', '');
     res.cookie('access-token', '');
     res.json(({ logoutOk: true }: LogoutResponse));
   },
@@ -97,6 +100,7 @@ router.post(
 
     const accessToken = await signDevOnly(tokenData);
 
+    res.cookie('refresh-token', accessToken);
     res.cookie('access-token', accessToken);
     res.json(({ registerOk: true, dbName, currentUser }: RegisterResponse));
   }),
@@ -107,28 +111,37 @@ router.post(
   validate({ query: refreshSchema }),
   asm(async (req, res) => {
     let { dbName } = req.query;
-    let accessToken = req.cookies['access-token'];
-    let u = '000000000000000000000000';
-    if (accessToken) {
-      log.debug('Found accessToken');
+    const refreshToken = req.cookies['refresh-token'];
+    let u = ObjectId();
+    if (refreshToken) {
       try {
-        const tokenData = await verify(accessToken);
-        u = tokenData.u || u; // eslint-disable-line prefer-destructuring
+        const tokenData = await verify(refreshToken);
+        log.debug('Found refreshToken', tokenData);
+        try {
+          u = ObjectId(tokenData.u) || u; // eslint-disable-line prefer-destructuring
+        } catch (err) {
+          log.error(err);
+        }
         dbName = tokenData.dbName || dbName; // eslint-disable-line prefer-destructuring
       } catch (err) {
         log.error(err);
       }
+    } else {
+      const refreshTokenData = { u: u.toHexString(), dbName };
+      const newRefreshToken = await signDevOnly(refreshTokenData);
+      res.cookie('refresh-token', newRefreshToken);
     }
-    const tokenData = { u, dbName };
+    const tokenData = { u: u.toHexString(), dbName };
     log.debug('Refreshing accessToken', tokenData);
-    accessToken = await signDevOnly(tokenData);
+    const accessToken = await signDevOnly(tokenData);
+
     res.cookie('access-token', accessToken);
 
     const currentUser: CurrentUser = {
       anonymous: true,
       displayName: 'anonymous',
       email: 'anonymous@anonymous.com',
-      uid: 'anonymous',
+      uid: u,
       dbName,
     };
 
