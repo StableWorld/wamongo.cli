@@ -89,6 +89,17 @@
     eslint-plugin-jsx-a11y "^6.0.2"
     eslint-plugin-react "^7.7.0"
 
+"@wamongo/interfaces@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@wamongo/interfaces/-/interfaces-1.0.12.tgz#a4d9b6e0cc63cbd90172fcf716ec5d84e2474709"
+  dependencies:
+    babel-eslint "^8.2.3"
+    eslint "^4.19.1"
+    eslint-config-airbnb "16.1.0"
+    eslint-plugin-import "^2.9.0"
+    eslint-plugin-jsx-a11y "^6.0.2"
+    eslint-plugin-react "^7.7.0"
+
 "@wamongo/interfaces@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@wamongo/interfaces/-/interfaces-1.0.6.tgz#43680fb8ead766100e8a3dba6e7b2aafd2deb373"
@@ -1968,9 +1979,9 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-flow-bin@^0.73.0:
-  version "0.73.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.73.0.tgz#da1b90a02b0ef9c439f068c2fc14968db83be425"
+flow-bin@^0.74.0:
+  version "0.74.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.74.0.tgz#8017bb00efb37cbe8d81fbb7f464038bde06adc9"
 
 flow-copy-source@^2.0.0:
   version "2.0.0"
@@ -2642,6 +2653,20 @@ jsonwebtoken@^8.2.2:
     lodash.once "^4.0.0"
     ms "^2.1.1"
     xtend "^4.0.1"
+
+jsonwebtoken@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.3.0.tgz#056c90eee9a65ed6e6c72ddb0a1d325109aaf643"
+  dependencies:
+    jws "^3.1.5"
+    lodash.includes "^4.3.0"
+    lodash.isboolean "^3.0.3"
+    lodash.isinteger "^4.0.4"
+    lodash.isnumber "^3.0.3"
+    lodash.isplainobject "^4.0.6"
+    lodash.isstring "^4.0.1"
+    lodash.once "^4.0.0"
+    ms "^2.1.1"
 
 jsx-ast-utils@^2.0.0, jsx-ast-utils@^2.0.1:
   version "2.0.1"
