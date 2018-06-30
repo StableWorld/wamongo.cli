@@ -10,8 +10,12 @@ const webClientDistPath = resolve(webClientPath, '..', '..', 'dist');
 export default function createApp(path: string, dbName: string) {
   const app = express();
 
+  app.locals.dbName = dbName;
   app.use(log.access);
   app.use('/auth', authRouter);
+  app.get('/internal/project/:dbName/rules', (req, res) => {
+    res.json({ rules: app.locals.rules });
+  });
   app.get('/__/init.js', (req, res) => {
     res.set('Content-Type', 'application/javascript; charset=UTF-8');
 
@@ -24,6 +28,9 @@ export default function createApp(path: string, dbName: string) {
   });
   app.use('/__', express.static(webClientDistPath));
   app.use('/', express.static(resolve(path)));
+  app.use('*', (req, res) => {
+    res.status(404).json({ error: 'resource not found' });
+  });
 
   return app;
 }

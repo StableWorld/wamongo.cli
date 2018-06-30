@@ -25,7 +25,9 @@ import {
 import { getClient } from '../db';
 import log from '../logger';
 import { signDevOnly } from '../webtoken';
-import { jsonSchemaValidationError, boomError, cors, noCache } from './middleware';
+import {
+  jsonSchemaValidationError, boomError, cors, noCache,
+} from './middleware';
 
 const router = Router();
 
@@ -110,7 +112,7 @@ router.post(
   '/refresh',
   validate({ query: refreshSchema }),
   asm(async (req, res) => {
-    let { dbName } = req.query;
+    let { dbName } = req.app.locals;
     const refreshToken = req.cookies['refresh-token'];
     let u = ObjectId();
     if (refreshToken) {
